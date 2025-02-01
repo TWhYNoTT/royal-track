@@ -1,0 +1,16 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Custom styles */
+body {
+  @apply bg-dark text-white;
+}
+
+/* .text-gold {
+  @apply text-gold;
+}
+
+.bg-gold {
+  @apply bg-gold;
+} */
