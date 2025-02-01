@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { ArrowRight, AlertCircle, Loader2 } from 'lucide-react';
 import { orderService } from '../services/orderService';
@@ -23,11 +23,7 @@ const OrderDetailsPage = () => {
     const [otp, setOtp] = useState('');
     const [isAddingItem, setIsAddingItem] = useState(false);
 
-    useEffect(() => {
-        fetchOrderDetails();
-    }, [id]);
-
-    const fetchOrderDetails = async () => {
+    const fetchOrderDetails = useCallback(async () => {
         try {
             const data = await orderService.getOrderById(id);
             setOrder(data);
@@ -36,7 +32,11 @@ const OrderDetailsPage = () => {
         } finally {
             setIsLoading(false);
         }
-    };
+    }, [id, setOrder, setError, setIsLoading]);  // Include all dependencies
+
+    useEffect(() => {
+        fetchOrderDetails();
+    }, [fetchOrderDetails]);
 
     const handleAddItem = async (itemData) => {
         setIsAddingItem(true);

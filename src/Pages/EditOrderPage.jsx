@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { ArrowRight, Upload, Loader2, AlertCircle } from 'lucide-react';
 import { orderService } from '../services/orderService';
@@ -23,11 +23,7 @@ const EditOrderPage = () => {
         productIamge: null
     });
 
-    useEffect(() => {
-        fetchOrderDetails();
-    }, [id]);
-
-    const fetchOrderDetails = async () => {
+    const fetchOrderDetails = useCallback(async () => {
         try {
             const data = await orderService.getOrderById(id);
             setFormData({
@@ -47,7 +43,11 @@ const EditOrderPage = () => {
         } finally {
             setIsLoading(false);
         }
-    };
+    }, [id]);
+
+    useEffect(() => {
+        fetchOrderDetails();
+    }, [fetchOrderDetails]);
 
     const handleChange = (e) => {
         const { name, value } = e.target;
